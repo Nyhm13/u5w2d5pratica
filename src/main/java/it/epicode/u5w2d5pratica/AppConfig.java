@@ -13,7 +13,7 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("application.properties")
-public class AppConfiguration {
+public class AppConfig {
     @Bean
     /*
      * questo metodo server per creare un oggetto Claudinary, che quindi ci permetta di uploadare file.Va create una mappa con all`interno

@@ -19,4 +19,22 @@ public class CustomExceptionHandler {
         error.setDataErrore(LocalDateTime.now());
         return  error;
     }
+
+    @ExceptionHandler(ConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError notFoundException (ConflictException e){
+        ApiError error= new ApiError();
+        error.setMessage(e.getMessage());
+        error.setDataErrore(LocalDateTime.now());
+        return  error;
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError notFoundException (ValidationException e){
+        ApiError error= new ApiError();
+        error.setMessage(e.getMessage());
+        error.setDataErrore(LocalDateTime.now());
+        return  error;
+    }
 }
