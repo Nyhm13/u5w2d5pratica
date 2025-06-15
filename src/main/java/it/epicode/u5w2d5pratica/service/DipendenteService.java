@@ -6,6 +6,7 @@ import it.epicode.u5w2d5pratica.exception.NotFoundException;
 import it.epicode.u5w2d5pratica.model.Dipendente;
 import it.epicode.u5w2d5pratica.repository.DipendenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,8 +36,16 @@ public class DipendenteService {
         dipendente.setEmail(dipendenteDto.getEmail());
         dipendente.setAvatar("https://ui-avatars.com/api/?name=" + dipendenteDto.getNome() + "+" + dipendenteDto.getCognome());
 
-        //sendMail(dipendente.getEmail());
-        return dipendenteRepository.save(dipendente);
+
+        Dipendente savedDipendente= dipendenteRepository.save(dipendente);
+        sendMail(savedDipendente.getEmail(),
+                savedDipendente.getUsername(),
+                savedDipendente.getNome(),
+                savedDipendente.getCognome(),
+                savedDipendente.getId());
+
+
+        return  savedDipendente;
     }
 
     //metodo per cercare un dipendente per id
@@ -85,6 +94,21 @@ public class DipendenteService {
         dipendenteRepository.save(dipendenteDaPatchare);
 
         return url ;
+    }
+
+    private void sendMail(String email,String username,String nome,String cognome,int id) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Registrazione Avvenuta con successo al sito di gestione dipendenti ");
+        message.setText("Benvenuto " + nome + " " + cognome + ",\n\n" +
+                "La tua registrazione al servizio REST è avvenuta con successo.\n" +
+                        "Il tuo ID generato è: " + id + ".\n" +
+                        "Il tuo username è: " + username + ".\n\n" +
+                        "Ora puoi iniziare a prenotare i tuoi viaggi !\n\n" +
+                        "Ricordati di tenere al sicuro le tue credenziali.\n\n"+
+                        "Grazie per esserti unito a noi!\n\n" );
+
+        javaMailSender.send(message);
     }
 
 }
