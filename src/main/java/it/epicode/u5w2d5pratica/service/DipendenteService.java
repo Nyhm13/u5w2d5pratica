@@ -38,11 +38,13 @@ public class DipendenteService {
 
 
         Dipendente savedDipendente= dipendenteRepository.save(dipendente);
-        sendMail(savedDipendente.getEmail(),
-                savedDipendente.getUsername(),
-                savedDipendente.getNome(),
-                savedDipendente.getCognome(),
-                savedDipendente.getId());
+
+        // Invia una email di conferma al dipendente , l`ho commentato per evitare di inviare email ogni volta che creo un dipendente
+//        sendMail(savedDipendente.getEmail(),
+//                savedDipendente.getUsername(),
+//                savedDipendente.getNome(),
+//                savedDipendente.getCognome(),
+//                savedDipendente.getId());
 
 
         return  savedDipendente;
